@@ -9,14 +9,22 @@ sf::TcpServer::TcpServer()
 
 sf::TcpServer::~TcpServer()
 {
+    if(!this->closing)
+        this->Close();
+}
+
+void sf::TcpServer::Close()
+{
     {
         sf::Lock lock(closingMutex);
-        closing = true;
+        this->closing = true;
     }
+
     if(this->loopThread != NULL)
     {
         this->loopThread->wait();
         delete this->loopThread;
+        this->loopThread = NULL;
     }
 }
 
@@ -58,10 +66,14 @@ void sf::TcpServer::loop()
                 sf::TcpSocket* client = new sf::TcpSocket();
                 if(listener.accept(*client) == sf::Socket::Done)
                 {
+                    if(this->OnConnectionRequest(*client))
                     {
                         sf::Lock lock(this->clientsMutex);
                         this->clients.push_back(client);
                         selector.add(*client);
+                    }else{
+                        client->disconnect();
+                        delete client;
                     }
                 }else{
                     delete client;

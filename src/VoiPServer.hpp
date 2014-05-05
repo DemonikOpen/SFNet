@@ -2,6 +2,7 @@
 #define VOIPSERVER_HPP_INCLUDED
 
 #include "sfServer.hpp"
+#include "sfAudioStream.hpp"
 
 namespace voip{
     class Server : public sf::TcpServer{

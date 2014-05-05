@@ -4,14 +4,33 @@ voip::Client::Client()
 {
     audioStream = new voip::AudioStream();
     audioRecorder = new voip::AudioRecorder(*this);
-    audioStream->play();
-    audioRecorder->start(44100);
 }
 
 voip::Client::~Client()
 {
-    delete audioStream;
-    delete audioRecorder;
+    if(audioStream != NULL)
+    {
+        delete audioStream;
+        audioStream = NULL;
+    }
+    if(audioRecorder != NULL)
+    {
+        delete audioRecorder;
+        audioRecorder = NULL;
+    }
+}
+
+void voip::Client::OnConnection()
+{
+    audioStream->play();
+    audioRecorder->start(44100);
+}
+
+void voip::Client::Disconnect()
+{
+    audioStream->pause();
+    audioRecorder->stop();
+    sf::TcpClient::Disconnect();
 }
 
 void voip::Client::OnDataReceive(sf::Packet packet)

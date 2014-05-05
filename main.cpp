@@ -4,6 +4,7 @@
 
 int main(int argc,char *argv[])
 {
+
     if(atoi(argv[1]) == 1)
     {
         voip::Server* server = new voip::Server();
@@ -11,6 +12,8 @@ int main(int argc,char *argv[])
         server->Listen(15364);
         std::cout << "Press enter to stop server";
         std::cin.ignore(10000, '\n');
+
+        server->Close();
 
         delete server;
     }
@@ -28,6 +31,8 @@ int main(int argc,char *argv[])
 
         std::cout << "Press enter to stop client";
         std::cin.ignore(10000, '\n');
+
+        client->Disconnect();
 
         delete client;
     }

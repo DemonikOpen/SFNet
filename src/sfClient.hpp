@@ -13,13 +13,14 @@ namespace sf{
         void loop();
     protected:
         sf::TcpSocket socket;
+        virtual void OnConnection() = 0;
         virtual void OnDataReceive(sf::Packet data) = 0;
         bool isConnected;
     public:
         TcpClient();
         virtual ~TcpClient();
         bool Connect(const IpAddress& remoteAddress, unsigned short remotePort, sf::Time timeout = sf::Time::Zero);
-        void Disconnect();
+        virtual void Disconnect();
         bool SendData(sf::Packet data);
     };
 }

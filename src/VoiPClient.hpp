@@ -11,8 +11,10 @@ namespace voip{
         AudioStream* audioStream;
         AudioRecorder* audioRecorder;
     protected:
+        void OnConnection() override;
         void OnDataReceive(sf::Packet data) override;
     public:
+        void Disconnect() override;
         Client();
         ~Client();
     };

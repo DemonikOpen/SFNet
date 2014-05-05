@@ -22,6 +22,7 @@ namespace sf{
         TcpServer();
         virtual ~TcpServer();
         const bool Listen(unsigned short port);
+        void Close();
     };
 }
 

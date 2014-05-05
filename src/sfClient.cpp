@@ -1,20 +1,16 @@
 #include "sfClient.hpp"
+#include <iostream>
 
 sf::TcpClient::TcpClient()
 {
     isConnected = false;
+    this->loopThread = NULL;
+    closing = false;
 }
 
 sf::TcpClient::~TcpClient(){
-    {
-        sf::Lock lock(closingMutex);
-        closing = true;
-    }
-    if(this->loopThread != NULL)
-    {
-        this->loopThread->wait();
-        delete this->loopThread;
-    }
+    if(!this->closing)
+        this->Disconnect();
 }
 
 bool sf::TcpClient::Connect(const IpAddress& remoteAddress, unsigned short remotePort, sf::Time timeout)
@@ -24,6 +20,8 @@ bool sf::TcpClient::Connect(const IpAddress& remoteAddress, unsigned short remot
 
     if(this->isConnected)
     {
+        this->OnConnection();
+
         this->loopThread = new sf::Thread(&sf::TcpClient::loop, &(*this));
         this->loopThread->launch();
 
@@ -35,8 +33,18 @@ bool sf::TcpClient::Connect(const IpAddress& remoteAddress, unsigned short remot
 
 void sf::TcpClient::Disconnect()
 {
-    sf::Lock lock(closingMutex);
-    this->closing = true;
+    {
+        sf::Lock lock(closingMutex);
+        this->isConnected = false;
+        this->closing = true;
+    }
+
+    if(this->loopThread != NULL)
+    {
+        this->loopThread->wait();
+        delete this->loopThread;
+        this->loopThread = NULL;
+    }
 }
 
 bool sf::TcpClient::SendData(sf::Packet data)

@@ -1,5 +1,5 @@
-#ifndef SFAUDIOSTREAM_HPP_INCLUDED
-#define SFAUDIOSTREAM_HPP_INCLUDED
+#ifndef AUDIOSTREAM_HPP_INCLUDED
+#define AUDIOSTREAM_HPP_INCLUDED
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -7,7 +7,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <iomanip>
-#include <iostream>
 #include <iterator>
 
 
@@ -53,11 +52,11 @@ namespace voip{
         virtual bool onGetData(sf::SoundStream::Chunk& data)
         {
             // We have reached the end of the buffer and all audio data have been played : we can stop playback
-            if ((m_offset >= m_samples.size()))
+            if ((m_offset >= m_samples.size()) && getStatus() != sf::Sound::Playing)
                 return false;
 
             // No new data has arrived since last update : wait until we get some
-            while ((m_offset >= m_samples.size()))
+            while ((m_offset >= m_samples.size()) && getStatus() == sf::Sound::Playing)
                 sf::sleep(sf::milliseconds(10));
 
             // Copy samples into a local buffer to avoid synchronization problems
@@ -66,8 +65,6 @@ namespace voip{
                 sf::Lock lock(m_mutex);
                 m_tempBuffer.assign(m_samples.begin() + m_offset, m_samples.end());
             }
-
-            std::cout << "Parsing audio..." << std::endl;
 
             // Fill audio data to pass to the stream
             data.samples = &m_tempBuffer[0];
@@ -97,4 +94,4 @@ namespace voip{
         std::size_t m_offset;
     };
 }
-#endif // SFAUDIOSTREAM_HPP_INCLUDED
+#endif // AUDIOSTREAM_HPP_INCLUDED
