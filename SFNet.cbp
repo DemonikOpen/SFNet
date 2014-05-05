@@ -46,13 +46,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../../SFNet/extension/sdl_tcp/client.cpp" />
-		<Unit filename="../../../SFNet/extension/sdl_tcp/client.hpp" />
-		<Unit filename="../../../SFNet/extension/sdl_tcp/server.cpp" />
-		<Unit filename="../../../SFNet/extension/sdl_tcp/server.hpp" />
-		<Unit filename="../../../SFNet/src/netLib/binarystream.cpp" />
-		<Unit filename="../../../SFNet/src/netLib/common.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/VoiPServer.cpp" />
+		<Unit filename="src/VoiPServer.hpp" />
+		<Unit filename="src/sfAudioRecorder.hpp" />
+		<Unit filename="src/sfAudioStream.hpp" />
+		<Unit filename="src/sfClient.cpp" />
+		<Unit filename="src/sfClient.hpp" />
+		<Unit filename="src/sfListener.hpp" />
+		<Unit filename="src/sfServer.cpp" />
+		<Unit filename="src/sfServer.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
