@@ -86,4 +86,6 @@ void sf::TcpServer::loop()
             }
         }
     }
+
+    std::cout << "Server closed" << std::endl;
 }

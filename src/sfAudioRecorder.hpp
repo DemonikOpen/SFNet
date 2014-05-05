@@ -8,16 +8,18 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
-
+#ifndef PACKET_INDEXES
+#define PACKET_INDEXES
 const sf::Uint8 audioData = 1;
 const sf::Uint8 endOfStream = 2;
+#endif
 
-namespace sf{
+namespace voip{
     ////////////////////////////////////////////////////////////
     /// Specialization of audio recorder for sending recorded audio
     /// data through the network
     ////////////////////////////////////////////////////////////
-    class NetworkRecorder : public sf::SoundRecorder
+    class AudioRecorder : public sf::SoundRecorder
     {
     public :
 
@@ -28,9 +30,9 @@ namespace sf{
         /// \param port Port of the remote host
         ///
         ////////////////////////////////////////////////////////////
-        NetworkRecorder(const sf::TcpSocket& socket) :
-        m_socket(socket)
+        AudioRecorder(sf::TcpClient& client)
         {
+            m_client = &client;
         }
 
     private :
@@ -55,8 +57,10 @@ namespace sf{
             packet << audioData;
             packet.append(samples, sampleCount * sizeof(sf::Int16));
 
+            std::cout << "Sending audio..." << std::endl;
+
             // Send the audio packet to the server
-            return m_socket.send(packet) == sf::Socket::Done;
+            return m_client->SendData(packet);
         }
 
         ////////////////////////////////////////////////////////////
@@ -68,13 +72,13 @@ namespace sf{
             // Send a "end-of-stream" packet
             sf::Packet packet;
             packet << endOfStream;
-            m_socket.send(packet);
+            m_client->SendData(packet);
         }
 
         ////////////////////////////////////////////////////////////
         // Member data
         ////////////////////////////////////////////////////////////
-        sf::TcpSocket m_socket; ///< Socket used to communicate with the server
+        sf::TcpClient* m_client; ///< Socket used to communicate with the server
     };
 }
 #endif // SFAUDIORECORDER_HPP_INCLUDED

@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="2" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DSFML_STATIC" />
@@ -47,6 +48,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
+		<Unit filename="src/VoiPClient.cpp" />
+		<Unit filename="src/VoiPClient.hpp" />
 		<Unit filename="src/VoiPServer.cpp" />
 		<Unit filename="src/VoiPServer.hpp" />
 		<Unit filename="src/sfAudioRecorder.hpp" />
