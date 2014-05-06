@@ -57,8 +57,6 @@ namespace voip{
             packet << audioData;
             packet.append(samples, sampleCount * sizeof(sf::Int16));
 
-            std::cout << "Sending audio..." << std::endl;
-
             // Send the audio packet to the server
             return m_client->SendData(packet);
         }

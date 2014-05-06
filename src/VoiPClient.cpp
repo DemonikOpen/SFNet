@@ -28,8 +28,9 @@ void voip::Client::OnConnection()
 
 void voip::Client::Disconnect()
 {
-    audioStream->pause();
+    audioStream->stop();
     audioRecorder->stop();
+
     sf::TcpClient::Disconnect();
 }
 
@@ -40,7 +41,6 @@ void voip::Client::OnDataReceive(sf::Packet packet)
 
     if (id == audioData)
     {
-        std::cout << "Receiving audio..." << std::endl;
         const sf::Int16* samples = reinterpret_cast<const sf::Int16*>(static_cast<const char*>(packet.getData()) + 1);
         std::size_t sampleCount = (packet.getDataSize() - 1) / sizeof(sf::Int16);
 

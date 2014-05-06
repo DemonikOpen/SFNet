@@ -8,18 +8,36 @@ voip::Server::Server() : sf::TcpServer()
 
 void voip::Server::OnDataReceive(const sf::TcpSocket& client, sf::Packet data)
 {
-    for (std::list<sf::TcpSocket*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
+    sf::Packet pack;
+    pack << data.getData();
+
+    sf::Uint8 id;
+    pack >> id;
+
+    if(id == audioData)
     {
-        sf::TcpSocket& receiver = **it;
-        if(&receiver != &client)
+        for (std::vector<sf::TcpSocket*>::iterator it = this->clients.begin(); it != this->clients.end(); ++it)
         {
-            std::cout << "Sending data to.." << std::endl;
-            receiver.send(data);
+            sf::TcpSocket& receiver = **it;
+            if(&receiver != &client)
+            {
+                receiver.send(data);
+            }
         }
+    }else if(id == endOfStream)
+    {
+        this->Disconnect((sf::TcpSocket*)&client);
     }
+}
+
+void voip::Server::Disconnect(sf::TcpSocket* client)
+{
+    std::cout << "Client Disconnection" << std::endl;
+    sf::TcpServer::Disconnect(client);
 }
 
 bool voip::Server::OnConnectionRequest(const sf::TcpSocket& client)
 {
+    std::cout << "Incomming connection" << std::endl;
     return true;
 }

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1399284794 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\main.cpp
+1399342737 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\main.cpp
 	"src/VoiPServer.hpp"
 	"src/VoiPClient.hpp"
 	<iostream>
@@ -98,12 +98,12 @@
 
 1367997281 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\include\sfml\system\vector3.inl
 
-1399281769 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.cpp
+1399340622 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.cpp
 	<iostream>
 	"sfServer.hpp"
 
-1399281378 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.hpp
-	<list>
+1399340225 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.hpp
+	<vector>
 	<SFML/Network.hpp>
 
 1367997281 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\include\sfml\network.hpp
@@ -177,22 +177,22 @@
 	<SFML/Network/Socket.hpp>
 	<vector>
 
-1399281985 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipserver.hpp
+1399337312 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipserver.hpp
 	"sfServer.hpp"
 	"sfAudioStream.hpp"
 
-1399281994 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipserver.cpp
+1399340371 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipserver.cpp
 	"VoiPServer.hpp"
 	<iostream>
 
-1399282712 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfclient.cpp
+1399342261 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfclient.cpp
 	"sfClient.hpp"
 	<iostream>
 
 1399282103 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfclient.hpp
 	<SFML/Network.hpp>
 
-1399283068 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipclient.cpp
+1399342788 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipclient.cpp
 	"VoiPClient.hpp"
 
 1399282120 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\voipclient.hpp
@@ -266,7 +266,7 @@
 	<SFML/System/Thread.hpp>
 	<vector>
 
-1399266845 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfaudiorecorder.hpp
+1399342802 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfaudiorecorder.hpp
 	<SFML/Audio.hpp>
 	<SFML/Network.hpp>
 	<iostream>

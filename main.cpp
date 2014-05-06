@@ -9,8 +9,13 @@ int main(int argc,char *argv[])
     {
         voip::Server* server = new voip::Server();
 
-        server->Listen(15364);
-        std::cout << "Press enter to stop server";
+        if(!server->Listen(15364))
+        {
+            std::cout << "Error trying to listen on port 15364" << std::endl;
+            return -1;
+        }
+        std::cout << "Listening on port 15364" << std::endl;
+        std::cout << "Press enter to stop server" << std::endl;
         std::cin.ignore(10000, '\n');
 
         server->Close();
@@ -22,14 +27,20 @@ int main(int argc,char *argv[])
     {
         voip::Client* client = new voip::Client();
 
-        std::cout << "Connection to localhost" << std::endl;
-        if(!client->Connect("127.0.0.1", 15364))
+        std::string host;
+        std::cout << "Enter the host you want to connect to: ";
+        std::cin >> host;
+        std::cin.ignore(10000, '\n');
+
+        std::cout << "Connecting to " << host << " on port 15634" << std::endl;
+        if(!client->Connect(host, 15364))
         {
             std::cout << "Error establishing connection" << std::endl;
             return -1;
         }
 
-        std::cout << "Press enter to stop client";
+        std::cout << "Connection established" << std::endl;
+        std::cout << "Press enter to stop client" << std::endl;
         std::cin.ignore(10000, '\n');
 
         client->Disconnect();

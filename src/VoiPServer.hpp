@@ -12,6 +12,7 @@ namespace voip{
         bool OnConnectionRequest(const sf::TcpSocket& client) override;
         void OnDataReceive(const sf::TcpSocket& client, const sf::Packet data) override;
     public:
+        void Disconnect(sf::TcpSocket* client) override;
         Server();
         ~Server(){};
     };

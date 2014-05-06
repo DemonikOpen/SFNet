@@ -28,6 +28,11 @@ void sf::TcpServer::Close()
     }
 }
 
+void sf::TcpServer::Disconnect(sf::TcpSocket* client)
+{
+    client->disconnect();
+}
+
 const bool sf::TcpServer::Listen(unsigned short port)
 {
     this->port = port;
@@ -48,8 +53,11 @@ void sf::TcpServer::loop()
         return;
     }
 
-    sf::SocketSelector selector;
-    selector.add(listener);
+    {
+        sf::Lock lock(selectorMutex);
+        selector.add(listener);
+    }
+
 
     while(true)
     {
@@ -59,41 +67,53 @@ void sf::TcpServer::loop()
                 break;
         }
 
-        if(selector.wait(sf::seconds(5)))
         {
-            if(selector.isReady(listener))
+            sf::Lock lock(selectorMutex);
+            if(selector.wait(sf::seconds(5)))
             {
-                sf::TcpSocket* client = new sf::TcpSocket();
-                if(listener.accept(*client) == sf::Socket::Done)
+                if(selector.isReady(listener))
                 {
-                    if(this->OnConnectionRequest(*client))
+                    sf::TcpSocket* client = new sf::TcpSocket();
+                    if(listener.accept(*client) == sf::Socket::Done)
                     {
-                        sf::Lock lock(this->clientsMutex);
-                        this->clients.push_back(client);
-                        selector.add(*client);
+                        if(this->OnConnectionRequest(*client))
+                        {
+                            sf::Lock lock(this->clientsMutex);
+                            this->clients.push_back(client);
+                            selector.add(*client);
+                        }else{
+                            client->disconnect();
+                            delete client;
+                        }
                     }else{
-                        client->disconnect();
                         delete client;
                     }
-                }else{
-                    delete client;
-                }
-            }else
-            {
-                sf::Lock lock(clientsMutex);
-                 // The listener socket is not ready, test all other sockets (the clients)
-                for (std::list<sf::TcpSocket*>::iterator it = clients.begin(); it != clients.end(); ++it)
+                }else
                 {
-                    sf::TcpSocket& sender = **it;
-                    if (selector.isReady(sender))
+                    sf::Lock lock(clientsMutex);
+                    // The listener socket is not ready, test all other sockets (the clients)
+                    for (std::vector<sf::TcpSocket*>::iterator it = clients.begin(); it != clients.end(); ++it)
                     {
-                        // The client has sent some data, we can receive it
-                        sf::Packet packet;
-                        if (sender.receive(packet) == sf::Socket::Done)
+                        sf::TcpSocket& sender = **it;
+                        if (selector.isReady(sender))
                         {
-                            OnDataReceive(sender, packet);
+                            // The client has sent some data, we can receive it
+                            sf::Packet packet;
+                            sf::Socket::Status status = sender.receive(packet);
+                            if (status == sf::Socket::Done)
+                            {
+                                OnDataReceive(sender, packet);
+                            }else if(status == sf::Socket::Disconnected)
+                            {
+                                selector.remove(sender);
+                                Disconnect(&sender);
+                                delete &sender;
+                                clients.erase(it);
+                                it--;
+                            }
                         }
                     }
+
                 }
             }
         }

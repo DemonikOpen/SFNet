@@ -38,6 +38,10 @@ void sf::TcpClient::Disconnect()
         this->isConnected = false;
         this->closing = true;
     }
+    {
+        sf::Lock lock(socketMutex);
+        socket.disconnect();
+    }
 
     if(this->loopThread != NULL)
     {
@@ -72,12 +76,18 @@ void sf::TcpClient::loop()
         if(selector.wait(sf::seconds(5)))
         {
             {
+                sf::Lock lock(socketMutex);
                 if(selector.isReady(this->socket))
                 {
                     sf::Packet data;
-                    if(this->socket.receive(data) == sf::Socket::Done)
+                    sf::Socket::Status status = this->socket.receive(data);
+                    if(status == sf::Socket::Done)
                     {
                         this->OnDataReceive(data);
+                    }else if(status == sf::Socket::Disconnected)
+                    {
+                        std::cout << "Connection lost" << std::endl;
+                        break;
                     }
                 }
             }
