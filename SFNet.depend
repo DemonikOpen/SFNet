@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1399342737 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\main.cpp
+1399343177 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\main.cpp
 	"src/VoiPServer.hpp"
 	"src/VoiPClient.hpp"
 	<iostream>
@@ -98,11 +98,11 @@
 
 1367997281 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\include\sfml\system\vector3.inl
 
-1399340622 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.cpp
+1399343954 source:c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.cpp
 	<iostream>
 	"sfServer.hpp"
 
-1399340225 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.hpp
+1399343886 c:\users\ultimate\documents\visual studio 2010\projects\sfnet\src\sfserver.hpp
 	<vector>
 	<SFML/Network.hpp>
 

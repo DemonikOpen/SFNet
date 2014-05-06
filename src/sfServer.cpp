@@ -4,6 +4,7 @@
 sf::TcpServer::TcpServer()
 {
     closing = false;
+    port = 0;
     this->loopThread = NULL;
 }
 
@@ -109,7 +110,7 @@ void sf::TcpServer::loop()
                                 Disconnect(&sender);
                                 delete &sender;
                                 clients.erase(it);
-                                it--;
+                                --it;
                             }
                         }
                     }
